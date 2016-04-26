@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
 
+const dialogPolyfill = require('dialog-polyfill');
+
 const propTypes = {
     className: PropTypes.string,
     onCancel: PropTypes.func,
@@ -14,9 +16,11 @@ const defaultProps = {
 
 class Dialog extends React.Component {
     componentDidMount() {
+        const dialog = findDOMNode(this);
+        dialogPolyfill.registerDialog(dialog);
         this.refs.dialog.addEventListener('cancel', this.props.onCancel);
         if (this.props.open) {
-            findDOMNode(this).showModal();
+            dialog.showModal();
         }
     }
 
